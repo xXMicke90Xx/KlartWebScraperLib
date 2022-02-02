@@ -8,11 +8,11 @@ namespace KlartWebScraperLib
 {
     public class WeatherInfo
     {
-        private DateOnly Date { get; set; }
-        private int Temperature { get; set; }
-        private TimeOnly Time { get; set; }
-        private int? Cloudiness { get; set; }
-        private int? RainRisk { get; set; }
+        public DateOnly Date { get; set; }
+        public int Temperature { get; set; }
+        public TimeOnly Time { get; set; }
+        public int? Cloudiness { get; set; }
+        public int? RainRisk { get; set; }
 
         public WeatherInfo(DateOnly date, int Temp, TimeOnly time, int cloudiness, int rainRisk) 
         {

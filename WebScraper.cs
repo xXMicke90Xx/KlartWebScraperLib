@@ -8,11 +8,20 @@ using System.Threading.Tasks;
 
 namespace KlartWebScraperLib
 {
+    
     public class WebScraper
     {
-        public List<WeatherInfo> GetWeatherInfos(string city, string state, string date) // Returns a list of WeatherinfoObjects
-        {     
-            string url = UrlReplace(city, state, date);
+        
+        
+        
+        
+        
+
+        public List<WeatherInfo> GetWeatherInfos(string city, string state, string? date ) // Returns a list of WeatherinfoObjects
+        {   
+            if (date == null)
+                date = DateOnly.FromDateTime(DateTime.Now).ToString();
+            string url = UrlReplace(city.ToLower(), state.ToLower(), date);
             return ParseHtml(url);           
         }
         public string UrlParsing(string city, string state, string date) //Parse just the url, no real reason to use it
@@ -34,9 +43,9 @@ namespace KlartWebScraperLib
             city = ä.Replace(city, äReplacement);
             city = ö.Replace(city, öReplacement);
 
-            state = å.Replace(city, åReplacement);
-            state = ä.Replace(city, äReplacement);
-            state = ö.Replace(city, öReplacement);
+            state = å.Replace(state, åReplacement);
+            state = ä.Replace(state, äReplacement);
+            state = ö.Replace(state, öReplacement);
 
             string url = $"https://www.klart.se/se/{state}-l%C3%A4n/v%C3%A4der-{city}-gk/timmar/#{date}"; //standard string, dont change this if page hasnt changed
             return url;
@@ -85,6 +94,7 @@ namespace KlartWebScraperLib
                 }               
 
             }
+            
             if (info.Count > 0)
                 return info;
             else
