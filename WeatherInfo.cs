@@ -11,8 +11,8 @@ namespace KlartWebScraperLib
         public DateOnly Date { get; set; }
         public int Temperature { get; set; }
         public TimeOnly Time { get; set; }
-        public int? Cloudiness { get; set; }
-        public int? RainRisk { get; set; }
+        public int Cloudiness { get; set; }
+        public int RainRisk { get; set; }
 
         public WeatherInfo(DateOnly date, int Temp, TimeOnly time, int cloudiness, int rainRisk) 
         {

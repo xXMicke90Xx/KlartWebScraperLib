@@ -22,8 +22,8 @@ namespace KlartWebScraperLib
             if (date == null)
                 date = DateOnly.FromDateTime(DateTime.Now).ToString();
             string url = UrlReplace(city.ToLower(), state.ToLower(), date);
-            return ParseHtml(url);           
-        }
+            return ParseHtml(url);
+        }//https://www.klart.se/se/s%C3%B6dermanlands-l%C3%A4n/v%C3%A4der-eskilstuna-gk/
         public string UrlParsing(string city, string state, string date) //Parse just the url, no real reason to use it
         {          
             return UrlReplace(city, state, date);
@@ -61,17 +61,19 @@ namespace KlartWebScraperLib
             List<WeatherInfo> info = new List<WeatherInfo>();
             Regex dateSearch = new Regex("\\d+-\\d+-\\d+");
             Regex elementsSearch = new Regex(@"\s{1,}");
-
+            int count = 0;
             foreach (var row in doc.DocumentNode.SelectNodes("//div[@class=\"content\"]/*[@class=\"row\"]"))
             {
 
                 string foundDate = dateSearch.Match(row.OuterHtml).Value;
                 DateOnly date = DateOnly.Parse(foundDate);
                 string[] elements = elementsSearch.Split(row.InnerText.Trim()).ToArray();
+                if (elements.Length < 5)
+                    continue;
                 TimeOnly time = TimeOnly.Parse(elements[0]);
                 bool clouds = int.TryParse(elements[10], out int cloudPercentage);
                 bool rain = int.TryParse(elements[6], out int rainRisk);
-                bool temp = int.TryParse(elements[1], out int temperature);
+                bool temp = int.TryParse(elements[1].Remove(elements[1].Length-1), out int temperature);
                 
                 if (temp == true && clouds == true && rain == true)
                 {
@@ -91,8 +93,10 @@ namespace KlartWebScraperLib
                     {
                         
                     }
-                }               
-
+                }   
+                count++;
+                if (count == 50)
+                    break;
             }
             
             if (info.Count > 0)
